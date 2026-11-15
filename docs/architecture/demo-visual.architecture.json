@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": { "title": "Demo visual isolada do fork", "output": "demo-visual.html" },
+  "lanes": [
+    { "id": "demo", "label": "Aplicação demonstrativa" },
+    { "id": "limites", "label": "Isolamento" }
+  ],
+  "mainPath": ["fixtures", "leituras", "telas"],
+  "nodes": [
+    {
+      "id": "fixtures",
+      "lane": "demo",
+      "col": 0,
+      "type": "service",
+      "label": "demo/lib/data.ts: identidade e dados fictícios"
+    },
+    {
+      "id": "leituras",
+      "lane": "demo",
+      "col": 1,
+      "type": "api",
+      "label": "demo/lib/responses.ts: somente leitura local"
+    },
+    {
+      "id": "telas",
+      "lane": "demo",
+      "col": 2,
+      "type": "frontend",
+      "label": "DemoScreen: componentes originais e faixa de demonstração"
+    },
+    {
+      "id": "bloqueio",
+      "lane": "limites",
+      "col": 1,
+      "type": "api",
+      "label": "Proxy recusa Server Actions; API recusa escrita"
+    },
+    {
+      "id": "aliases",
+      "lane": "limites",
+      "col": 0,
+      "type": "service",
+      "label": "demo/tsconfig.json: SDK local e servidor desativado"
+    },
+    {
+      "id": "provas",
+      "lane": "limites",
+      "col": 3,
+      "type": "service",
+      "label": "Playwright: navegação, dados, diálogos e recusas"
+    }
+  ],
+  "edges": [
+    { "id": "e1", "from": "fixtures", "to": "leituras", "label": "dados sintéticos" },
+    {
+      "id": "e2",
+      "from": "leituras",
+      "to": "telas",
+      "label": "contratos de leitura esperados pelos componentes"
+    },
+    { "id": "e3", "from": "telas", "to": "bloqueio", "label": "tentativa de envio ou salvamento" },
+    { "id": "e4", "from": "bloqueio", "to": "telas", "label": "403 com aviso de demonstração" },
+    {
+      "id": "e5",
+      "from": "aliases",
+      "to": "telas",
+      "label": "sem autenticação ou conexão externa"
+    },
+    { "id": "e6", "from": "provas", "to": "telas", "label": "verifica resultados pela tela" },
+    { "id": "e7", "from": "provas", "to": "bloqueio", "label": "mede recusa de toda escrita" }
+  ]
+}
