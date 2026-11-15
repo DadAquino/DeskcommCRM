@@ -1,0 +1,18 @@
+@source "../";
+.demo-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  min-height: 36px;
+  padding: 6px 12px;
+  background: #eaf1e6;
+  color: #344a2f;
+  font-size: 12px;
+  border-bottom: 1px solid #cbd9c5;
+}
+.demo-banner a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
